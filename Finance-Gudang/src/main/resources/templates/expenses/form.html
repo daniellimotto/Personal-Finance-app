@@ -1,23 +1,80 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Expense Form</title></head>
+<head>
+  <title>Expense Form</title>
+  <script>
+    function updateTotal() {
+        const qty = parseFloat(document.getElementById('quantity').value) || 0;
+        const price = parseFloat(document.getElementById('pricePerQuantity').value) || 0;
+        document.getElementById('totalPrice').value = (qty * price).toFixed(2);
+    }
+  </script>
+</head>
 <body>
 <h2 th:text="${expense.id == null ? 'New Expense' : 'Edit Expense'}"></h2>
-<form th:action="@{/expenses}" th:object="${expense}" method="post">
-    <input type="hidden" th:field="*{id}"/>
 
-    Type:
-    <select th:field="*{expenseType}">
-        <option th:each="type : ${expenseTypes}" th:value="${type}" th:text="${type.name}"></option>
-    </select><br/>
+<form th:action="@{/expenses}" method="post">
+    <input type="hidden" name="id" th:value="${expense.id}"/>
 
-    Description: <input type="text" th:field="*{description}"/><br/>
-    Cost: <input type="number" step="0.01" th:field="*{cost}"/><br/>
-    Related Product: <input type="text" th:field="*{relatedProduct}"/><br/>
-    Date: <input type="datetime-local" th:field="*{expenseDate}"/><br/>
-    
+    <!-- Expense Type -->
+    <label>Type of Cost:</label><br/>
+    <input type="text" name="newType"
+           list="typeList"
+           th:value="${expense.expenseType != null ? expense.expenseType.name : ''}"
+           placeholder="Search or enter new type"/>
+    <datalist id="typeList">
+        <option th:each="type : ${expenseTypes}" th:value="${type.name}"></option>
+    </datalist><br/>
+
+    <!-- Date -->
+    <label>Date:</label><br/>
+    <input type="date" name="expenseDate" th:value="${expense.expenseDate}"/><br/>
+
+    <!-- Product -->
+    <label>Description of Goods:</label><br/>
+    <input type="text" name="product"
+           list="productList"
+           th:value="${expense.product != null ? expense.product.name : ''}"
+           placeholder="Search or enter new product"/>
+    <datalist id="productList">
+        <option th:each="p : ${productOptions}" th:value="${p.name}"></option>
+    </datalist><br/>
+
+    <!-- Quantity -->
+    <label>Quantity:</label><br/>
+    <input type="number" id="quantity" name="quantity" th:value="${expense.quantity}" oninput="updateTotal()"/><br/>
+
+    <!-- Price per Quantity -->
+    <label>Price per Quantity:</label><br/>
+    <input type="number" step="0.01" id="pricePerQuantity" name="pricePerQuantity" th:value="${expense.pricePerQuantity}" oninput="updateTotal()"/><br/>
+
+    <!-- Total Price (calculated) -->
+    <label>Total Price:</label><br/>
+    <input type="number" step="0.01" id="totalPrice" name="totalPrice" th:value="${expense.totalPrice}" readonly/><br/>
+
+    <!-- Supplier -->
+    <label>Supplier:</label><br/>
+    <input type="text" name="supplier"
+           list="supplierList"
+           th:value="${expense.supplier != null ? expense.supplier.name : ''}"
+           placeholder="Search or enter new supplier"/>
+    <datalist id="supplierList">
+        <option th:each="s : ${supplierOptions}" th:value="${s.name}"></option>
+    </datalist><br/>
+
+    <!-- Payment Method -->
+    <label>Payment Method:</label><br/>
+    <input type="text" name="paymentMethod"
+           list="paymentList"
+           th:value="${expense.paymentMethod != null ? expense.paymentMethod.name : ''}"
+           placeholder="Search or enter payment method"/>
+    <datalist id="paymentList">
+        <option th:each="pm : ${paymentMethodOptions}" th:value="${pm.name}"></option>
+    </datalist><br/>
+
     <button type="submit">Save</button>
 </form>
+
 <a th:href="@{/expenses}">Back</a>
 </body>
 </html>

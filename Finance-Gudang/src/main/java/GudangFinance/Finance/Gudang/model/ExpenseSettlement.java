@@ -1,7 +1,7 @@
 package GudangFinance.Finance.Gudang.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,9 +19,13 @@ public class ExpenseSettlement {
     @ManyToOne
     private Expense expense;  // Links to the bulk expense
 
+    // Units taken from the bulk expense's quantity
+    private Integer quantityUsed;
+
+    // Optional monetary amount tracking (kept for compatibility)
     private BigDecimal amountUsed;
 
-    private LocalDateTime dateUsed;
+    private LocalDate dateUsed;
 
     private String purpose;  // Optional note like "Used for Bin #2"
 
@@ -41,6 +45,14 @@ public class ExpenseSettlement {
         this.expense = expense;
     }
 
+    public Integer getQuantityUsed() {
+        return quantityUsed;
+    }
+
+    public void setQuantityUsed(Integer quantityUsed) {
+        this.quantityUsed = quantityUsed;
+    }
+
     public BigDecimal getAmountUsed() {
         return amountUsed;
     }
@@ -49,11 +61,11 @@ public class ExpenseSettlement {
         this.amountUsed = amountUsed;
     }
 
-    public LocalDateTime getDateUsed() {
+    public LocalDate getDateUsed() {
         return dateUsed;
     }
 
-    public void setDateUsed(LocalDateTime dateUsed) {
+    public void setDateUsed(LocalDate dateUsed) {
         this.dateUsed = dateUsed;
     }
 

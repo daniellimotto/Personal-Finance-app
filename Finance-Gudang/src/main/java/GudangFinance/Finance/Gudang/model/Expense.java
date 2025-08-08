@@ -1,14 +1,12 @@
 package GudangFinance.Finance.Gudang.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -21,13 +19,20 @@ public class Expense {
     @ManyToOne
     private ExpenseType expenseType;
 
-    private String description;
+    private LocalDate expenseDate;
 
-    private BigDecimal cost;
-
-    private String relatedProduct;
-
-    private LocalDateTime expenseDate;
+    @ManyToOne
+    private ProductDescription product;
+    
+    private Integer quantity;
+    private BigDecimal pricePerQuantity;
+    private BigDecimal totalPrice;
+    
+    @ManyToOne
+    private Supplier supplier;
+    
+    @ManyToOne
+    private PaymentMethod paymentMethod;
 
     public Long getId() {
         return id;
@@ -45,36 +50,59 @@ public class Expense {
         this.expenseType = expenseType;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getCost() {
-        return cost;
-    }
-
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
-
-    public String getRelatedProduct() {
-        return relatedProduct;
-    }
-
-    public void setRelatedProduct(String relatedProduct) {
-        this.relatedProduct = relatedProduct;
-    }
-
-    public LocalDateTime getExpenseDate() {
+    public LocalDate getExpenseDate() {
         return expenseDate;
     }
 
-    public void setExpenseDate(LocalDateTime expenseDate) {
+    public void setExpenseDate(LocalDate expenseDate) {
         this.expenseDate = expenseDate;
     }
-}
 
+    public ProductDescription getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductDescription product) {
+        this.product = product;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPricePerQuantity() {
+        return pricePerQuantity;
+    }
+
+    public void setPricePerQuantity(BigDecimal pricePerQuantity) {
+        this.pricePerQuantity = pricePerQuantity;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+}

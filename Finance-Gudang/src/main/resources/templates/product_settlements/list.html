@@ -10,7 +10,7 @@
         <td th:text="${ps.sale.id}"></td>
         <td th:text="${ps.sale.buyerName}"></td>
         <td th:text="${ps.quantityGiven}"></td>
-        <td th:text="${#dates.format(ps.dateGiven, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${ps.dateGiven}"></td>
         <td th:text="${ps.notes}"></td>
         <td>
             <a th:href="@{'/product-settlements/edit/' + ${ps.id}}">Edit</a>

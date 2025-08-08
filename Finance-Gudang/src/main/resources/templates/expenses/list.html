@@ -9,13 +9,15 @@
 </form>
 <a th:href="@{/expenses/new}">Add New Expense</a>
 <table border="1">
-    <tr><th>Type</th><th>Description</th><th>Cost</th><th>Product</th><th>Date</th><th>Actions</th></tr>
+    <tr><th>Type</th><th>Product</th><th>Quantity</th><th>Price Per Unit</th><th>Total Price</th><th>Supplier</th><th>Date</th><th>Actions</th></tr>
     <tr th:each="expense : ${expenses}">
         <td th:text="${expense.expenseType.name}"></td>
-        <td th:text="${expense.description}"></td>
-        <td th:text="${expense.cost}"></td>
-        <td th:text="${expense.relatedProduct}"></td>
-        <td th:text="${#dates.format(expense.expenseDate, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${expense.product.name}"></td>
+        <td th:text="${expense.quantity}"></td>
+        <td th:text="${expense.pricePerQuantity}"></td>
+        <td th:text="${expense.totalPrice}"></td>
+        <td th:text="${expense.supplier.name}"></td>
+        <td th:text="${expense.expenseDate}"></td>
         <td>
             <a th:href="@{'/expenses/edit/' + ${expense.id}}">Edit</a>
             <a th:href="@{'/expenses/delete/' + ${expense.id}}" onclick="return confirm('Are you sure?')">Delete</a>

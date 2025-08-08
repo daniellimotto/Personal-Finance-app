@@ -5,14 +5,17 @@
 <h2 th:text="${sale.id == null ? 'New Sale' : 'Edit Sale'}"></h2>
 <form th:action="@{/sales}" th:object="${sale}" method="post">
     <input type="hidden" th:field="*{id}"/>
+
     Buyer: <input type="text" th:field="*{buyerName}"/><br/>
     Company: <input type="text" th:field="*{companyName}"/><br/>
     Product: <input type="text" th:field="*{productName}"/><br/>
     Quantity: <input type="number" th:field="*{quantity}"/><br/>
     Amount: <input type="text" th:field="*{totalAmount}"/><br/>
-    Date: <input type="datetime-local" th:field="*{purchaseDate}"/><br/>
+    Date: <input type="date" th:field="*{purchaseDate}"/><br/>
+
     <button type="submit">Save</button>
 </form>
+
 <a th:href="@{/sales}">Back</a>
 </body>
 </html>

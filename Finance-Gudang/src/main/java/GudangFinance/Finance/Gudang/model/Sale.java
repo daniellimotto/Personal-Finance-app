@@ -1,7 +1,7 @@
 package GudangFinance.Finance.Gudang.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,7 +19,7 @@ public class Sale {
     private String productName;
     private Integer quantity;
     private BigDecimal totalAmount;
-    private LocalDateTime purchaseDate;
+    private LocalDate purchaseDate;
 
     public String getBuyerName() {
         return buyerName;
@@ -61,11 +61,11 @@ public class Sale {
         this.totalAmount = totalAmount;
     }
 
-    public LocalDateTime getPurchaseDate() {
+    public LocalDate getPurchaseDate() {
         return purchaseDate;
     }
 
-    public void setPurchaseDate(LocalDateTime purchaseDate) {
+    public void setPurchaseDate(LocalDate purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
     

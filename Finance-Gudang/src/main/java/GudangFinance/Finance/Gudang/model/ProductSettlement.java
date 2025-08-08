@@ -1,6 +1,6 @@
 package GudangFinance.Finance.Gudang.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +20,7 @@ public class ProductSettlement {
 
     private Integer quantityGiven;
 
-    private LocalDateTime dateGiven;
+    private LocalDate dateGiven;
 
     private String notes;
 
@@ -40,11 +40,11 @@ public class ProductSettlement {
         this.quantityGiven = quantityGiven;
     }
 
-    public LocalDateTime getDateGiven() {
+    public LocalDate getDateGiven() {
         return dateGiven;
     }
 
-    public void setDateGiven(LocalDateTime dateGiven) {
+    public void setDateGiven(LocalDate dateGiven) {
         this.dateGiven = dateGiven;
     }
 
