@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Sales</title></head>
+<body>
+<h2>Sales List</h2>
+<form th:action="@{/sales/search}" method="get">
+    <input type="text" name="keyword" placeholder="Search by buyer name"/>
+    <button type="submit">Search</button>
+</form>
+<a th:href="@{/sales/new}">Add New Sale</a>
+<table border="1">
+    <tr><th>Buyer</th><th>Company</th><th>Product</th><th>Date</th><th>Actions</th></tr>
+    <tr th:each="sale : ${sales}">
+        <td th:text="${sale.buyerName}"></td>
+        <td th:text="${sale.companyName}"></td>
+        <td th:text="${sale.productName}"></td>
+        <td th:text="${#dates.format(sale.purchaseDate, 'yyyy-MM-dd HH:mm')}"></td>
+        <td>
+            <a th:href="@{'/sales/edit/' + ${sale.id}}">Edit</a>
+            <a th:href="@{'/sales/delete/' + ${sale.id}}" onclick="return confirm('Are you sure?')">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

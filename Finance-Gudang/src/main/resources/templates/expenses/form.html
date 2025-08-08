@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Expense Form</title></head>
+<body>
+<h2 th:text="${expense.id == null ? 'New Expense' : 'Edit Expense'}"></h2>
+<form th:action="@{/expenses}" th:object="${expense}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+
+    Type:
+    <select th:field="*{expenseType}">
+        <option th:each="type : ${expenseTypes}" th:value="${type}" th:text="${type.name}"></option>
+    </select><br/>
+
+    Description: <input type="text" th:field="*{description}"/><br/>
+    Cost: <input type="number" step="0.01" th:field="*{cost}"/><br/>
+    Related Product: <input type="text" th:field="*{relatedProduct}"/><br/>
+    Date: <input type="datetime-local" th:field="*{expenseDate}"/><br/>
+    
+    <button type="submit">Save</button>
+</form>
+<a th:href="@{/expenses}">Back</a>
+</body>
+</html>

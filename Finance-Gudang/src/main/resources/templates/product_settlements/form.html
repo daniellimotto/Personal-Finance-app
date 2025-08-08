@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Product Settlement</title></head>
+<body>
+<h2 th:text="${settlement.id == null ? 'New' : 'Edit'} + ' Product Settlement'"></h2>
+<form th:action="@{/product-settlements}" th:object="${settlement}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    Sale:
+    <select th:field="*{sale}">
+        <option th:each="s : ${sales}" th:value="${s}" th:text="${s.buyerName + ' - ' + s.productName}"></option>
+    </select><br/>
+
+    Quantity Given: <input type="number" th:field="*{quantityGiven}"/><br/>
+    Date Given: <input type="datetime-local" th:field="*{dateGiven}"/><br/>
+    Notes: <input type="text" th:field="*{notes}"/><br/>
+
+    <button type="submit">Save</button>
+</form>
+<a th:href="@{/product-settlements}">Back</a>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Expense Settlements</title></head>
+<body>
+<h2>Expense Settlements</h2>
+<a th:href="@{/expense-settlements/new}">Add New</a>
+<table border="1">
+    <tr><th>Expense Type</th><th>Description</th><th>Amount Used</th><th>Date</th><th>Purpose</th><th>Actions</th></tr>
+    <tr th:each="es : ${settlements}">
+        <td th:text="${es.expense.expenseType.name}"></td>
+        <td th:text="${es.expense.description}"></td>
+        <td th:text="${es.amountUsed}"></td>
+        <td th:text="${#dates.format(es.dateUsed, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${es.purpose}"></td>
+        <td>
+            <a th:href="@{'/expense-settlements/edit/' + ${es.id}}">Edit</a>
+            <a th:href="@{'/expense-settlements/delete/' + ${es.id}}" onclick="return confirm('Delete?')">Delete</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
