@@ -42,16 +42,28 @@ public class ExpenseSettlementController {
         ExpenseSettlement settlement = new ExpenseSettlement();
         model.addAttribute("settlement", settlement);
 
-        List<Expense> allExpenses = expenseRepo.findAll();
+        // Start with all expenses
+        List<Expense> selectableExpenses = expenseRepo.findAll();
+
+        // Apply search filter if provided
         if (query != null && !query.isBlank()) {
             String q = query.toLowerCase();
-            allExpenses = allExpenses.stream().filter(e ->
+            selectableExpenses = selectableExpenses.stream().filter(e ->
                 (e.getProduct() != null && e.getProduct().getName() != null && e.getProduct().getName().toLowerCase().contains(q))
                 || (e.getExpenseDate() != null && e.getExpenseDate().toString().contains(q))
                 || (e.getExpenseType() != null && e.getExpenseType().getName() != null && e.getExpenseType().getName().toLowerCase().contains(q))
             ).collect(Collectors.toList());
         }
-        model.addAttribute("expenses", allExpenses);
+
+        // Exclude fully-settled expenses (remaining units <= 0)
+        selectableExpenses = selectableExpenses.stream().filter(e -> {
+            Integer usedUnits = expenseSettlementRepo.sumQuantityUsedByExpenseId(e.getId());
+            int totalUnits = e.getQuantity() != null ? e.getQuantity() : 0;
+            int used = usedUnits != null ? usedUnits : 0;
+            return (totalUnits - used) > 0; // keep only those with remaining > 0
+        }).collect(Collectors.toList());
+
+        model.addAttribute("expenses", selectableExpenses);
 
         if (expenseId != null) {
             Expense expense = expenseRepo.findById(expenseId).orElse(null);
@@ -97,7 +109,14 @@ public class ExpenseSettlementController {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("settlement", settlement);
-            model.addAttribute("expenses", expenseRepo.findAll());
+            // Rebuild selectable expenses list (excluding fully settled) to keep UX consistent
+            List<Expense> selectableExpenses = expenseRepo.findAll().stream().filter(e -> {
+                Integer usedUnits = expenseSettlementRepo.sumQuantityUsedByExpenseId(e.getId());
+                int totalUnits = e.getQuantity() != null ? e.getQuantity() : 0;
+                int used = usedUnits != null ? usedUnits : 0;
+                return (totalUnits - used) > 0;
+            }).collect(Collectors.toList());
+            model.addAttribute("expenses", selectableExpenses);
             return "expense_settlements/form";
         }
 

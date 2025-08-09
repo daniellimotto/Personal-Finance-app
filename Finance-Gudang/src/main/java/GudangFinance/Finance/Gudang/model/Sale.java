@@ -3,10 +3,12 @@ package GudangFinance.Finance.Gudang.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Sale {
@@ -14,35 +16,56 @@ public class Sale {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String buyerName;
-    private String companyName;
-    private String productName;
+    @Column(unique = true)
+    private String code;
+
+    @ManyToOne
+    private Company company;
+
+    @ManyToOne
+    private Buyer buyer;
+
+    @ManyToOne
+    private Product product;
+
     private Integer quantity;
+    private BigDecimal pricePerQuantity;
     private BigDecimal totalAmount;
     private LocalDate purchaseDate;
 
-    public String getBuyerName() {
-        return buyerName;
+    @ManyToOne
+    private PaymentMethod paymentMethod;
+
+    public String getCode() {
+        return code;
     }
 
-    public void setBuyerName(String buyerName) {
-        this.buyerName = buyerName;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public Company getCompany() {
+        return company;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
-    public String getProductName() {
-        return productName;
+    public Buyer getBuyer() {
+        return buyer;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setBuyer(Buyer buyer) {
+        this.buyer = buyer;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Integer getQuantity() {
@@ -51,6 +74,14 @@ public class Sale {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getPricePerQuantity() {
+        return pricePerQuantity;
+    }
+
+    public void setPricePerQuantity(BigDecimal pricePerQuantity) {
+        this.pricePerQuantity = pricePerQuantity;
     }
 
     public BigDecimal getTotalAmount() {
@@ -75,5 +106,13 @@ public class Sale {
     
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

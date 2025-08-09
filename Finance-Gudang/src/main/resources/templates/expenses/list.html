@@ -3,6 +3,7 @@
 <head><title>Expenses</title></head>
 <body>
 <h2>Expenses List</h2>
+<p><a th:href="@{/dashboard}">Back</a></p>
 <form th:action="@{/expenses/search}" method="get">
     <input type="text" name="keyword" placeholder="Search by product"/>
     <button type="submit">Search</button>

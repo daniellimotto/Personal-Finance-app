@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Product Settlement</title></head>
+<head><title>Product Settlement</title>
+<script>
+function updateRemaining() {
+  const select = document.getElementById('saleSelect');
+  const option = select.options[select.selectedIndex];
+  const remainingUnits = option ? option.getAttribute('data-remaining-units') : null;
+  const totalUnits = option ? option.getAttribute('data-total-units') : null;
+  document.getElementById('remainingInfo').textContent = (remainingUnits!=null) ? ('Remaining units: ' + remainingUnits + ' / Total units: ' + totalUnits) : '';
+}
+window.addEventListener('DOMContentLoaded', function(){
+  const select = document.getElementById('saleSelect');
+  if (select) updateRemaining();
+});
+</script>
+</head>
 <body>
 <h2 th:text="${settlement.id == null ? 'New' : 'Edit'} + ' Product Settlement'"></h2>
+
+<form method="get" th:action="@{/product-settlements/new}">
+  <input type="text" name="q" placeholder="Search by product/buyer/company/date" th:value="${param.q}"/>
+  <button type="submit">Search</button>
+  <a th:href="@{/product-settlements/new}">Clear</a>
+</form>
+
 <form th:action="@{/product-settlements}" th:object="${settlement}" method="post">
     <input type="hidden" th:field="*{id}"/>
 
     Sale:
-    <select th:field="*{sale}">
-        <option th:each="s : ${sales}" th:value="${s}" 
-                th:text="${s.buyerName + ' - ' + s.productName}"></option>
-    </select><br/>
+    <select id="saleSelect" th:field="*{sale.id}" onchange="updateRemaining()">
+        <option th:each="s : ${sales}"
+                th:value="${s.id}"
+                th:with="given=${@productSettlementRepository.sumQuantityGivenBySaleId(s.id)}"
+                th:attr="data-total-units=${s.quantity},data-remaining-units=${(s.quantity != null ? s.quantity : 0) - (given != null ? given : 0)}"
+                th:text="${(s.code != null ? s.code + ' | ' : '') + (s.product != null ? s.product.name : '') + ' | ' + (s.buyer != null ? s.buyer.name : '') + ' | ' + s.purchaseDate}">
+        </option>
+    </select>
+    <div id="remainingInfo" style="margin:6px 0; font-weight:bold"></div>
 
-    Quantity Given: <input type="number" th:field="*{quantityGiven}"/><br/>
+    Quantity Given: <input type="number" min="1" th:field="*{quantityGiven}"/><br/>
     Date Given: <input type="date" th:field="*{dateGiven}"/><br/>
-    Notes: <input type="text" th:field="*{notes}"/><br/>
 
     <button type="submit">Save</button>
 </form>
