@@ -31,7 +31,20 @@ public class ProductSettlementController {
 
     @GetMapping
     public String list(@RequestParam(value = "q", required = false) String query, Model model) {
-        model.addAttribute("settlements", productSettlementRepo.findAll());
+        List<ProductSettlement> settlements = productSettlementRepo.findAll();
+        if (query != null && !query.isBlank()) {
+            String q = query.toLowerCase();
+            settlements = settlements.stream().filter(ps -> {
+                Sale s = ps.getSale();
+                String code = s != null && s.getCode() != null ? s.getCode().toLowerCase() : "";
+                String buyer = s != null && s.getBuyer() != null && s.getBuyer().getName() != null ? s.getBuyer().getName().toLowerCase() : "";
+                String company = s != null && s.getCompany() != null && s.getCompany().getName() != null ? s.getCompany().getName().toLowerCase() : "";
+                String product = s != null && s.getProduct() != null && s.getProduct().getName() != null ? s.getProduct().getName().toLowerCase() : "";
+                String date = s != null && s.getPurchaseDate() != null ? s.getPurchaseDate().toString() : "";
+                return code.contains(q) || buyer.contains(q) || company.contains(q) || product.contains(q) || date.contains(q);
+            }).collect(Collectors.toList());
+        }
+        model.addAttribute("settlements", settlements);
         model.addAttribute("q", query);
         return "product_settlements/list";
     }
@@ -49,6 +62,7 @@ public class ProductSettlementController {
                 (s.getBuyer() != null && s.getBuyer().getName() != null && s.getBuyer().getName().toLowerCase().contains(q))
                 || (s.getCompany() != null && s.getCompany().getName() != null && s.getCompany().getName().toLowerCase().contains(q))
                 || (s.getProduct() != null && s.getProduct().getName() != null && s.getProduct().getName().toLowerCase().contains(q))
+                || (s.getCode() != null && s.getCode().toLowerCase().contains(q))
                 || (s.getPurchaseDate() != null && s.getPurchaseDate().toString().contains(q))
             ).collect(Collectors.toList());
         }

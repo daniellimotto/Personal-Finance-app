@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Expense Settlements</title></head>
+<head><title>Expense Settlements</title>
+<link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
 <body>
 <h2>Expense Settlements</h2>
-<p><a th:href="@{/dashboard}">Back</a></p>
-<a th:href="@{/expense-settlements/new}">Add New</a>
+<p class="back-link"><a th:href="@{/dashboard}">Back</a></p>
+<a class="button-link" th:href="@{/expense-settlements/new}">Add New</a>
+<form class="toolbar" th:action="@{/expense-settlements}" method="get">
+  <input type="text" name="q" placeholder="Search by type/product/date/purpose" th:value="${q}"/>
+  <button type="submit">Search</button>
+</form>
 <table border="1">
     <tr><th>Expense Type</th><th>Product</th><th>Quantity Used</th><th>Date</th><th>Purpose</th><th>Actions</th></tr>
     <tr th:each="es : ${settlements}">

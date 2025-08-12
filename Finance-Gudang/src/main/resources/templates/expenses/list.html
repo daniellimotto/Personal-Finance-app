@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Expenses</title></head>
+<head><title>Expenses</title>
+<link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
 <body>
 <h2>Expenses List</h2>
-<p><a th:href="@{/dashboard}">Back</a></p>
-<form th:action="@{/expenses/search}" method="get">
+<p class="back-link"><a th:href="@{/dashboard}">Back</a></p>
+<form class="toolbar" th:action="@{/expenses/search}" method="get">
     <input type="text" name="keyword" placeholder="Search by product"/>
     <button type="submit">Search</button>
 </form>
-<a th:href="@{/expenses/new}">Add New Expense</a>
+<a class="button-link" th:href="@{/expenses/new}">Add New Expense</a>
 <table border="1">
     <tr><th>Type</th><th>Product</th><th>Quantity</th><th>Price Per Unit</th><th>Total Price</th><th>Supplier</th><th>Date</th><th>Actions</th></tr>
     <tr th:each="expense : ${expenses}">

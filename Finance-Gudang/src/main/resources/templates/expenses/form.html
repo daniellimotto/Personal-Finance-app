@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Expense Form</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}" />
   <script>
     function updateTotal() {
         const qty = parseFloat(document.getElementById('quantity').value) || 0;
@@ -12,69 +13,51 @@
 </head>
 <body>
 <h2 th:text="${expense.id == null ? 'New Expense' : 'Edit Expense'}"></h2>
-
+<div class="card">
 <form th:action="@{/expenses}" method="post">
     <input type="hidden" name="id" th:value="${expense.id}"/>
 
-    <!-- Expense Type -->
-    <label>Type of Cost:</label><br/>
-    <input type="text" name="newType"
-           list="typeList"
-           th:value="${expense.expenseType != null ? expense.expenseType.name : ''}"
-           placeholder="Search or enter new type"/>
+    <label>Type of Cost</label>
+    <input type="text" name="newType" list="typeList" th:value="${expense.expenseType != null ? expense.expenseType.name : ''}" placeholder="Search or enter new type"/>
     <datalist id="typeList">
         <option th:each="type : ${expenseTypes}" th:value="${type.name}"></option>
-    </datalist><br/>
+    </datalist>
 
-    <!-- Date -->
-    <label>Date:</label><br/>
-    <input type="date" name="expenseDate" th:value="${expense.expenseDate}"/><br/>
+    <label>Date</label>
+    <input type="date" name="expenseDate" th:value="${expense.expenseDate}"/>
 
-    <!-- Product -->
-    <label>Description of Goods:</label><br/>
-    <input type="text" name="product"
-           list="productList"
-           th:value="${expense.product != null ? expense.product.name : ''}"
-           placeholder="Search or enter new product"/>
+    <label>Description of Goods</label>
+    <input type="text" name="product" list="productList" th:value="${expense.product != null ? expense.product.name : ''}" placeholder="Search or enter new product"/>
     <datalist id="productList">
         <option th:each="p : ${productOptions}" th:value="${p.name}"></option>
-    </datalist><br/>
+    </datalist>
 
-    <!-- Quantity -->
-    <label>Quantity:</label><br/>
-    <input type="number" id="quantity" name="quantity" th:value="${expense.quantity}" oninput="updateTotal()"/><br/>
+    <label>Quantity</label>
+    <input type="number" id="quantity" name="quantity" th:value="${expense.quantity}" oninput="updateTotal()"/>
 
-    <!-- Price per Quantity -->
-    <label>Price per Quantity:</label><br/>
-    <input type="number" step="0.01" id="pricePerQuantity" name="pricePerQuantity" th:value="${expense.pricePerQuantity}" oninput="updateTotal()"/><br/>
+    <label>Price per Quantity</label>
+    <input type="number" step="0.01" id="pricePerQuantity" name="pricePerQuantity" th:value="${expense.pricePerQuantity}" oninput="updateTotal()"/>
 
-    <!-- Total Price (calculated) -->
-    <label>Total Price:</label><br/>
-    <input type="number" step="0.01" id="totalPrice" name="totalPrice" th:value="${expense.totalPrice}" readonly/><br/>
+    <label>Total Price</label>
+    <input type="number" step="0.01" id="totalPrice" name="totalPrice" th:value="${expense.totalPrice}" readonly/>
 
-    <!-- Supplier -->
-    <label>Supplier:</label><br/>
-    <input type="text" name="supplier"
-           list="supplierList"
-           th:value="${expense.supplier != null ? expense.supplier.name : ''}"
-           placeholder="Search or enter new supplier"/>
+    <label>Supplier</label>
+    <input type="text" name="supplier" list="supplierList" th:value="${expense.supplier != null ? expense.supplier.name : ''}" placeholder="Search or enter new supplier"/>
     <datalist id="supplierList">
         <option th:each="s : ${supplierOptions}" th:value="${s.name}"></option>
-    </datalist><br/>
+    </datalist>
 
-    <!-- Payment Method -->
-    <label>Payment Method:</label><br/>
-    <input type="text" name="paymentMethod"
-           list="paymentList"
-           th:value="${expense.paymentMethod != null ? expense.paymentMethod.name : ''}"
-           placeholder="Search or enter payment method"/>
+    <label>Payment Method</label>
+    <input type="text" name="paymentMethod" list="paymentList" th:value="${expense.paymentMethod != null ? expense.paymentMethod.name : ''}" placeholder="Search or enter payment method"/>
     <datalist id="paymentList">
         <option th:each="pm : ${paymentMethodOptions}" th:value="${pm.name}"></option>
-    </datalist><br/>
+    </datalist>
 
-    <button type="submit">Save</button>
+    <div class="mt-12">
+      <button type="submit">Save</button>
+      <a class="button-link" th:href="@{/expenses}">Back</a>
+    </div>
 </form>
-
-<a th:href="@{/expenses}">Back</a>
+</div>
 </body>
 </html>

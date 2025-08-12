@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Sales</title></head>
+<head><title>Sales</title>
+<link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
 <body>
 <h2>Sales List</h2>
-<p><a th:href="@{/dashboard}">Back</a></p>
-<form th:action="@{/sales/search}" method="get">
+<p class="back-link"><a th:href="@{/dashboard}">Back</a></p>
+<form class="toolbar" th:action="@{/sales/search}" method="get">
     <input type="text" name="keyword" placeholder="Search by buyer name"/>
     <button type="submit">Search</button>
 </form>
-<a th:href="@{/sales/new}">Add New Sale</a>
+<a class="button-link" th:href="@{/sales/new}">Add New Sale</a>
 <table border="1">
     <tr>
         <th>Code</th>

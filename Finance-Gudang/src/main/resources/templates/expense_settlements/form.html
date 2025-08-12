@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Expense Settlement</title>
+<link rel="stylesheet" th:href="@{/css/app.css}" />
 <script>
 function updateRemaining() {
   const select = document.getElementById('expenseSelect');
@@ -18,17 +19,18 @@ window.addEventListener('DOMContentLoaded', function(){
 <body>
 <h2 th:text="${settlement.id == null ? 'New' : 'Edit'} + ' Expense Settlement'"></h2>
 
-<form method="get" th:action="@{/expense-settlements/new}">
+<form class="toolbar" method="get" th:action="@{/expense-settlements/new}">
   <input type="text" name="q" placeholder="Search by product, type, or date (YYYY-MM-DD)" th:value="${param.q}"/>
   <button type="submit">Search</button>
-  <a th:href="@{/expense-settlements/new}">Clear</a>
+  <a class="button-link" th:href="@{/expense-settlements/new}">Clear</a>
 </form>
 
+<div class="card">
 <form th:action="@{/expense-settlements}" th:object="${settlement}" method="post">
     <input type="hidden" th:field="*{id}"/>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-    Expense:
+    <label>Expense</label>
     <select id="expenseSelect" th:field="*{expense.id}" onchange="updateRemaining()">
         <option th:each="e : ${expenses}"
                 th:value="${e.id}"
@@ -39,21 +41,23 @@ window.addEventListener('DOMContentLoaded', function(){
     </select>
     <div id="remainingInfo" style="margin:6px 0; font-weight:bold"></div>
     <div th:if="${#fields.hasErrors('expense')}">
-      <span style="color:red" th:errors="*{expense}"></span>
+      <span class="error" th:errors="*{expense}"></span>
     </div>
 
-    Quantity Used: <input type="number" min="1" th:field="*{quantityUsed}"/>
+    <label>Quantity Used</label>
+    <input type="number" min="1" th:field="*{quantityUsed}"/>
     <div th:if="${#fields.hasErrors('quantityUsed')}">
-      <span style="color:red" th:errors="*{quantityUsed}"></span>
+      <span class="error" th:errors="*{quantityUsed}"></span>
     </div>
-    <br/>
 
-    Date Used: <input type="date" th:field="*{dateUsed}"/><br/>
-    Purpose: <input type="text" th:field="*{purpose}"/><br/>
+    <label>Date Used</label>
+    <input type="date" th:field="*{dateUsed}"/>
 
-    <button type="submit">Save</button>
+    <div class="mt-12">
+      <button type="submit">Save</button>
+      <a class="button-link" th:href="@{/expense-settlements}">Back</a>
+    </div>
 </form>
-
-<a th:href="@{/expense-settlements}">Back</a>
+</div>
 </body>
 </html>

@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Login</title></head>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
 <body>
+<div class="card">
 <h2>Login</h2>
 <form th:action="@{/login}" method="post">
-    <label>Username: <input type="text" name="username"/></label><br/>
-    <label>Password: <input type="password" name="password"/></label><br/>
-    <button type="submit">Login</button>
+    <label>Username</label>
+    <input type="text" name="username"/>
+    <label>Password</label>
+    <input type="password" name="password"/>
+    <div class="mt-12">
+      <button type="submit">Login</button>
+    </div>
 </form>
-<p>Don't have an account? <a th:href="@{/register}">Register</a></p>
+<p class="mt-12">Don't have an account? <a th:href="@{/register}">Register</a></p>
+</div>
+<p th:if="${param.error}" class="error">Invalid username or password</p>
 </body>
-<p th:if="${param.error}" style="color:red">Invalid username or password</p>
 </html>

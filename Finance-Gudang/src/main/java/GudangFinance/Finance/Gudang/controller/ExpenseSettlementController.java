@@ -30,8 +30,21 @@ public class ExpenseSettlementController {
     private ExpenseRepository expenseRepo;
 
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("settlements", expenseSettlementRepo.findAll());
+    public String list(@RequestParam(value = "q", required = false) String query, Model model) {
+        List<ExpenseSettlement> settlements = expenseSettlementRepo.findAll();
+        if (query != null && !query.isBlank()) {
+            String q = query.toLowerCase();
+            settlements = settlements.stream().filter(es -> {
+                var e = es.getExpense();
+                String type = (e != null && e.getExpenseType() != null && e.getExpenseType().getName() != null) ? e.getExpenseType().getName().toLowerCase() : "";
+                String product = (e != null && e.getProduct() != null && e.getProduct().getName() != null) ? e.getProduct().getName().toLowerCase() : "";
+                String date = (es.getDateUsed() != null) ? es.getDateUsed().toString() : "";
+                String purpose = (es.getPurpose() != null) ? es.getPurpose().toLowerCase() : "";
+                return type.contains(q) || product.contains(q) || date.contains(q) || purpose.contains(q);
+            }).collect(Collectors.toList());
+        }
+        model.addAttribute("settlements", settlements);
+        model.addAttribute("q", query);
         return "expense_settlements/list";
     }
 

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,7 @@ import GudangFinance.Finance.Gudang.model.PaymentMethod;
 import GudangFinance.Finance.Gudang.model.ProductDescription;
 import GudangFinance.Finance.Gudang.model.Supplier;
 import GudangFinance.Finance.Gudang.repository.ExpenseRepository;
+import GudangFinance.Finance.Gudang.repository.ExpenseSettlementRepository;
 import GudangFinance.Finance.Gudang.repository.ExpenseTypeRepository;
 import GudangFinance.Finance.Gudang.repository.PaymentMethodRepository;
 import GudangFinance.Finance.Gudang.repository.ProductDescriptionRepository;
@@ -30,6 +30,7 @@ import GudangFinance.Finance.Gudang.repository.SupplierRepository;
 public class ExpenseController {
 
     @Autowired private ExpenseRepository expenseRepo;
+    @Autowired private ExpenseSettlementRepository expenseSettlementRepo;
     @Autowired private ExpenseTypeRepository expenseTypeRepo;
     @Autowired private ProductDescriptionRepository productRepo;
     @Autowired private SupplierRepository supplierRepo;
@@ -129,6 +130,10 @@ public class ExpenseController {
 
     @GetMapping("/delete/{id}")
     public String deleteExpense(@PathVariable Long id) {
+        var children = expenseSettlementRepo.findByExpense_Id(id);
+        if (children != null && !children.isEmpty()) {
+            expenseSettlementRepo.deleteAll(children);
+        }
         expenseRepo.deleteById(id);
         return "redirect:/expenses";
     }

@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Register</title></head>
+<head>
+  <title>Register</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
 <body>
+<div class="card">
 <h2>Register</h2>
 <form th:action="@{/register}" th:object="${user}" method="post">
-    <label>Username: <input type="text" th:field="*{username}"/></label><br/>
-    <label>Password: <input type="password" th:field="*{password}"/></label><br/>
-    <button type="submit">Register</button>
+    <label>Username</label>
+    <input type="text" th:field="*{username}"/>
+    <label>Password</label>
+    <input type="password" th:field="*{password}"/>
+    <div class="mt-12">
+      <button type="submit">Register</button>
+    </div>
 </form>
-<p>Already have an account? <a th:href="@{/login}">Login</a></p>
-<button type="button" onclick="history.back()">Back</button>
+<p class="mt-12">Already have an account? <a th:href="@{/login}">Login</a></p>
+</div>
 </body>
 </html>

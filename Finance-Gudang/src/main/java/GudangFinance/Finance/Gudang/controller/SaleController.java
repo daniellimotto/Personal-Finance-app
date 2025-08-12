@@ -22,6 +22,7 @@ import GudangFinance.Finance.Gudang.repository.CompanyRepository;
 import GudangFinance.Finance.Gudang.repository.PaymentMethodRepository;
 import GudangFinance.Finance.Gudang.repository.ProductRepository;
 import GudangFinance.Finance.Gudang.repository.SaleRepository;
+import GudangFinance.Finance.Gudang.repository.ProductSettlementRepository;
 
 @Controller
 @RequestMapping("/sales")
@@ -32,6 +33,7 @@ public class SaleController {
     @Autowired private CompanyRepository companyRepo;
     @Autowired private BuyerRepository buyerRepo;
     @Autowired private ProductRepository productRepo;
+    @Autowired private ProductSettlementRepository productSettlementRepo;
 
     @GetMapping
     public String listSales(Model model) {
@@ -122,6 +124,11 @@ public class SaleController {
 
     @GetMapping("/delete/{id}")
     public String deleteSale(@PathVariable Long id) {
+        // Remove child product settlements to avoid FK constraint violations
+        var children = productSettlementRepo.findBySale_Id(id);
+        if (children != null && !children.isEmpty()) {
+            productSettlementRepo.deleteAll(children);
+        }
         saleRepo.deleteById(id);
         return "redirect:/sales";
     }

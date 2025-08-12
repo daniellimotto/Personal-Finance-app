@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Product Settlement</title>
+<link rel="stylesheet" th:href="@{/css/app.css}" />
 <script>
 function updateRemaining() {
   const select = document.getElementById('saleSelect');
@@ -18,16 +19,17 @@ window.addEventListener('DOMContentLoaded', function(){
 <body>
 <h2 th:text="${settlement.id == null ? 'New' : 'Edit'} + ' Product Settlement'"></h2>
 
-<form method="get" th:action="@{/product-settlements/new}">
+<form class="toolbar" method="get" th:action="@{/product-settlements/new}">
   <input type="text" name="q" placeholder="Search by product/buyer/company/date" th:value="${param.q}"/>
   <button type="submit">Search</button>
-  <a th:href="@{/product-settlements/new}">Clear</a>
+  <a class="button-link" th:href="@{/product-settlements/new}">Clear</a>
 </form>
 
+<div class="card">
 <form th:action="@{/product-settlements}" th:object="${settlement}" method="post">
     <input type="hidden" th:field="*{id}"/>
 
-    Sale:
+    <label>Sale</label>
     <select id="saleSelect" th:field="*{sale.id}" onchange="updateRemaining()">
         <option th:each="s : ${sales}"
                 th:value="${s.id}"
@@ -38,12 +40,17 @@ window.addEventListener('DOMContentLoaded', function(){
     </select>
     <div id="remainingInfo" style="margin:6px 0; font-weight:bold"></div>
 
-    Quantity Given: <input type="number" min="1" th:field="*{quantityGiven}"/><br/>
-    Date Given: <input type="date" th:field="*{dateGiven}"/><br/>
+    <label>Quantity Given</label>
+    <input type="number" min="1" th:field="*{quantityGiven}"/>
 
-    <button type="submit">Save</button>
+    <label>Date Given</label>
+    <input type="date" th:field="*{dateGiven}"/>
+
+    <div class="mt-12">
+      <button type="submit">Save</button>
+      <a class="button-link" th:href="@{/product-settlements}">Back</a>
+    </div>
 </form>
-
-<a th:href="@{/product-settlements}">Back</a>
+</div>
 </body>
 </html>

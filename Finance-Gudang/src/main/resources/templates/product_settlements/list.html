@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Product Settlements</title></head>
+<head><title>Product Settlements</title>
+<link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
 <body>
 <h2>Product Settlements</h2>
-<p><a th:href="@{/dashboard}">Back</a></p>
-<a th:href="@{/product-settlements/new}">Add New</a>
-<form th:action="@{/product-settlements}" method="get" style="margin:10px 0">
+<p class="back-link"><a th:href="@{/dashboard}">Back</a></p>
+<a class="button-link" th:href="@{/product-settlements/new}">Add New</a>
+<form class="toolbar" th:action="@{/product-settlements}" method="get" style="margin:10px 0">
   <input type="text" name="q" placeholder="Search by product/buyer/company/date" th:value="${q}"/>
   <button type="submit">Search</button>
 </form>

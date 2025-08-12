@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Sale Form</title>
+<link rel="stylesheet" th:href="@{/css/app.css}" />
 <script>
 function updateTotal() {
   const qty = parseFloat(document.getElementById('quantity').value) || 0;
@@ -11,42 +12,54 @@ function updateTotal() {
 </head>
 <body>
 <h2 th:text="${sale.id == null ? 'New Sale' : 'Edit Sale'}"></h2>
+<div class="card">
 <form th:action="@{/sales}" method="post">
     <input type="hidden" name="id" th:value="${sale.id}"/>
 
-    Code: <input type="text" name="code" th:value="${sale.code}" required/><br/>
+    <label>Code</label>
+    <input type="text" name="code" th:value="${sale.code}" required/>
 
-    Company: <input type="text" name="companyName" list="companyList" th:value="${sale.company != null ? sale.company.name : ''}" placeholder="Type or select company"/>
+    <label>Company</label>
+    <input type="text" name="companyName" list="companyList" th:value="${sale.company != null ? sale.company.name : ''}" placeholder="Type or select company"/>
     <datalist id="companyList">
       <option th:each="c : ${companyOptions}" th:value="${c.name}"></option>
-    </datalist><br/>
+    </datalist>
 
-    Buyer: <input type="text" name="buyerName" list="buyerList" th:value="${sale.buyer != null ? sale.buyer.name : ''}" placeholder="Type or select buyer"/>
+    <label>Buyer</label>
+    <input type="text" name="buyerName" list="buyerList" th:value="${sale.buyer != null ? sale.buyer.name : ''}" placeholder="Type or select buyer"/>
     <datalist id="buyerList">
       <option th:each="b : ${buyerOptions}" th:value="${b.name}"></option>
-    </datalist><br/>
+    </datalist>
 
-    Product: <input type="text" name="productName" list="productList" th:value="${sale.product != null ? sale.product.name : ''}" placeholder="Type or select product"/>
+    <label>Product</label>
+    <input type="text" name="productName" list="productList" th:value="${sale.product != null ? sale.product.name : ''}" placeholder="Type or select product"/>
     <datalist id="productList">
       <option th:each="p : ${productOptions}" th:value="${p.name}"></option>
-    </datalist><br/>
+    </datalist>
 
-    Quantity: <input type="number" id="quantity" name="quantity" th:value="${sale.quantity}" oninput="updateTotal()"/><br/>
+    <label>Quantity</label>
+    <input type="number" id="quantity" name="quantity" th:value="${sale.quantity}" oninput="updateTotal()"/>
 
-    Price per Quantity: <input type="number" step="0.01" id="pricePerQuantity" name="pricePerQuantity" th:value="${sale.pricePerQuantity}" oninput="updateTotal()"/><br/>
+    <label>Price per Quantity</label>
+    <input type="number" step="0.01" id="pricePerQuantity" name="pricePerQuantity" th:value="${sale.pricePerQuantity}" oninput="updateTotal()"/>
 
-    Total Amount: <input type="number" step="0.01" id="totalAmount" name="totalAmount" th:value="${sale.totalAmount}" readonly/><br/>
+    <label>Total Amount</label>
+    <input type="number" step="0.01" id="totalAmount" name="totalAmount" th:value="${sale.totalAmount}" readonly/>
 
-    Date: <input type="date" name="purchaseDate" th:value="${sale.purchaseDate}"/><br/>
+    <label>Date</label>
+    <input type="date" name="purchaseDate" th:value="${sale.purchaseDate}"/>
 
-    Payment Method: <input type="text" name="paymentMethod" list="pmList" th:value="${sale.paymentMethod != null ? sale.paymentMethod.name : ''}" placeholder="Type or select method"/>
+    <label>Payment Method</label>
+    <input type="text" name="paymentMethod" list="pmList" th:value="${sale.paymentMethod != null ? sale.paymentMethod.name : ''}" placeholder="Type or select method"/>
     <datalist id="pmList">
       <option th:each="pm : ${paymentMethodOptions}" th:value="${pm.name}"></option>
-    </datalist><br/>
+    </datalist>
 
-    <button type="submit">Save</button>
+    <div class="mt-12">
+      <button type="submit">Save</button>
+      <a class="button-link" th:href="@{/sales}">Back</a>
+    </div>
 </form>
-
-<a th:href="@{/sales}">Back</a>
+</div>
 </body>
 </html>
