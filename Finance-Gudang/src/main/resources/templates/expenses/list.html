@@ -17,8 +17,8 @@
         <td th:text="${expense.expenseType.name}"></td>
         <td th:text="${expense.product.name}"></td>
         <td th:text="${expense.quantity}"></td>
-        <td th:text="${expense.pricePerQuantity}"></td>
-        <td th:text="${expense.totalPrice}"></td>
+        <td th:text="${'Rp. ' + #numbers.formatDecimal(expense.pricePerQuantity, 0, 'COMMA', 0, 'POINT')}"></td>
+        <td th:text="${'Rp. ' + #numbers.formatDecimal(expense.totalPrice, 0, 'COMMA', 0, 'POINT')}"></td>
         <td th:text="${expense.supplier.name}"></td>
         <td th:text="${expense.expenseDate}"></td>
         <td>

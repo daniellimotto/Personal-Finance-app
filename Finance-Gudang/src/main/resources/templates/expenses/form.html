@@ -4,11 +4,46 @@
   <title>Expense Form</title>
   <link rel="stylesheet" th:href="@{/css/app.css}" />
   <script>
-    function updateTotal() {
-        const qty = parseFloat(document.getElementById('quantity').value) || 0;
-        const price = parseFloat(document.getElementById('pricePerQuantity').value) || 0;
-        document.getElementById('totalPrice').value = (qty * price).toFixed(2);
+    function parseNumber(val){
+      if(val==null) return 0;
+      const digitsOnly = String(val).replace(/[^0-9]/g, '');
+      const num = parseInt(digitsOnly || '0', 10);
+      return isNaN(num) ? 0 : num;
     }
+    function formatCurrency(num){
+      const n = Number(num||0);
+      return 'Rp. ' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+    function updateTotal() {
+        const qty = parseNumber(document.getElementById('quantity').value);
+        const priceRaw = parseNumber(document.getElementById('pricePerQuantity').value);
+        const total = qty * priceRaw;
+        document.getElementById('pricePerQuantity').value = formatCurrency(priceRaw);
+        document.getElementById('totalPrice').value = formatCurrency(total);
+    }
+    window.addEventListener('DOMContentLoaded', function(){
+      const price = document.getElementById('pricePerQuantity');
+      const total = document.getElementById('totalPrice');
+      const qty = document.getElementById('quantity');
+      if(price){ price.value = formatCurrency(parseNumber(price.value)); }
+      if(total){ total.value = formatCurrency(parseNumber(total.value)); }
+      if(qty){ qty.addEventListener('input', updateTotal); }
+      if(price){ price.addEventListener('input', updateTotal); }
+
+      const form = document.querySelector('form[method="post"]');
+      if(form){
+        form.addEventListener('submit', function(){
+          // Unformat currency before submit
+          const currencyInputs = [price, total];
+          currencyInputs.forEach(function(inp){
+            if(inp){
+              const val = parseNumber(inp.value);
+              inp.value = String(val);
+            }
+          });
+        });
+      }
+    });
   </script>
 </head>
 <body>
@@ -36,10 +71,10 @@
     <input type="number" id="quantity" name="quantity" th:value="${expense.quantity}" oninput="updateTotal()"/>
 
     <label>Price per Quantity</label>
-    <input type="number" step="0.01" id="pricePerQuantity" name="pricePerQuantity" th:value="${expense.pricePerQuantity}" oninput="updateTotal()"/>
+    <input type="text" id="pricePerQuantity" name="pricePerQuantity" th:value="${expense.pricePerQuantity}" class="currency"/>
 
     <label>Total Price</label>
-    <input type="number" step="0.01" id="totalPrice" name="totalPrice" th:value="${expense.totalPrice}" readonly/>
+    <input type="text" id="totalPrice" name="totalPrice" th:value="${expense.totalPrice}" class="currency" readonly/>
 
     <label>Supplier</label>
     <input type="text" name="supplier" list="supplierList" th:value="${expense.supplier != null ? expense.supplier.name : ''}" placeholder="Search or enter new supplier"/>

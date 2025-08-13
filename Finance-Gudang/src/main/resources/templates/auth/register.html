@@ -12,6 +12,16 @@
     <input type="text" th:field="*{username}"/>
     <label>Password</label>
     <input type="password" th:field="*{password}"/>
+    <label>Role</label>
+    <select name="desiredRole">
+      <option value="USER" selected>User</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+    <div>
+      <label>Registration Code</label>
+      <input type="password" name="registrationSecret" />
+    </div>
+    <p th:if="${error}" class="error" th:text="${error}"></p>
     <div class="mt-12">
       <button type="submit">Register</button>
     </div>

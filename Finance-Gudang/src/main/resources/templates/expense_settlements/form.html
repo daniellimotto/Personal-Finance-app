@@ -53,6 +53,9 @@ window.addEventListener('DOMContentLoaded', function(){
     <label>Date Used</label>
     <input type="date" th:field="*{dateUsed}"/>
 
+    <label>Purpose</label>
+    <input type="text" th:field="*{purpose}" placeholder="Optional purpose or note"/>
+
     <div class="mt-12">
       <button type="submit">Save</button>
       <a class="button-link" th:href="@{/expense-settlements}">Back</a>

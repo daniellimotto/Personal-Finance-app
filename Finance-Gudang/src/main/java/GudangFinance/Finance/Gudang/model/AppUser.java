@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 
 @Entity
 public class AppUser {
@@ -15,6 +16,9 @@ public class AppUser {
     private String username;
 
     private String password;
+
+    @Column(nullable = false)
+    private String role = "USER"; // USER or ADMIN
 
     public AppUser() {}
 
@@ -47,5 +51,13 @@ public class AppUser {
     public void setPassword(String password) {
         this.password = password;
     }
+
+     public String getRole() {
+         return role;
+     }
+
+     public void setRole(String role) {
+         this.role = role;
+     }
 }
 

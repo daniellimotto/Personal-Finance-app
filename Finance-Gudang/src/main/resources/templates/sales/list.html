@@ -30,8 +30,8 @@
         <td th:text="${sale.buyer != null ? sale.buyer.name : ''}"></td>
         <td th:text="${sale.product != null ? sale.product.name : ''}"></td>
         <td th:text="${sale.quantity}"></td>
-        <td th:text="${sale.pricePerQuantity}"></td>
-        <td th:text="${sale.totalAmount}"></td>
+        <td th:text="${'Rp. ' + #numbers.formatDecimal(sale.pricePerQuantity, 0, 'COMMA', 0, 'POINT')}"></td>
+        <td th:text="${'Rp. ' + #numbers.formatDecimal(sale.totalAmount, 0, 'COMMA', 0, 'POINT')}"></td>
         <td th:text="${sale.purchaseDate}"></td>
         <td th:text="${sale.paymentMethod != null ? sale.paymentMethod.name : ''}"></td>
         <td>

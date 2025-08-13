@@ -3,11 +3,45 @@
 <head><title>Sale Form</title>
 <link rel="stylesheet" th:href="@{/css/app.css}" />
 <script>
-function updateTotal() {
-  const qty = parseFloat(document.getElementById('quantity').value) || 0;
-  const price = parseFloat(document.getElementById('pricePerQuantity').value) || 0;
-  document.getElementById('totalAmount').value = (qty * price).toFixed(2);
+function parseNumber(val){
+  if(val==null) return 0;
+  const digitsOnly = String(val).replace(/[^0-9]/g, '');
+  const num = parseInt(digitsOnly || '0', 10);
+  return isNaN(num) ? 0 : num;
 }
+function formatCurrency(num){
+  const n = Number(num||0);
+  return 'Rp. ' + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function updateTotal() {
+  const qty = parseNumber(document.getElementById('quantity').value);
+  const priceRaw = parseNumber(document.getElementById('pricePerQuantity').value);
+  const total = qty * priceRaw;
+  document.getElementById('pricePerQuantity').value = formatCurrency(priceRaw);
+  document.getElementById('totalAmount').value = formatCurrency(total);
+}
+window.addEventListener('DOMContentLoaded', function(){
+  const price = document.getElementById('pricePerQuantity');
+  const total = document.getElementById('totalAmount');
+  const qty = document.getElementById('quantity');
+  if(price){ price.value = formatCurrency(parseNumber(price.value)); }
+  if(total){ total.value = formatCurrency(parseNumber(total.value)); }
+  if(qty){ qty.addEventListener('input', updateTotal); }
+  if(price){ price.addEventListener('input', updateTotal); }
+
+  const form = document.querySelector('form[method="post"]');
+  if(form){
+    form.addEventListener('submit', function(){
+      const currencyInputs = [price, total];
+      currencyInputs.forEach(function(inp){
+        if(inp){
+          const val = parseNumber(inp.value);
+          inp.value = String(val);
+        }
+      });
+    });
+  }
+});
 </script>
 </head>
 <body>
@@ -41,10 +75,10 @@ function updateTotal() {
     <input type="number" id="quantity" name="quantity" th:value="${sale.quantity}" oninput="updateTotal()"/>
 
     <label>Price per Quantity</label>
-    <input type="number" step="0.01" id="pricePerQuantity" name="pricePerQuantity" th:value="${sale.pricePerQuantity}" oninput="updateTotal()"/>
+    <input type="text" id="pricePerQuantity" name="pricePerQuantity" th:value="${sale.pricePerQuantity}" class="currency"/>
 
     <label>Total Amount</label>
-    <input type="number" step="0.01" id="totalAmount" name="totalAmount" th:value="${sale.totalAmount}" readonly/>
+    <input type="text" id="totalAmount" name="totalAmount" th:value="${sale.totalAmount}" class="currency" readonly/>
 
     <label>Date</label>
     <input type="date" name="purchaseDate" th:value="${sale.purchaseDate}"/>
