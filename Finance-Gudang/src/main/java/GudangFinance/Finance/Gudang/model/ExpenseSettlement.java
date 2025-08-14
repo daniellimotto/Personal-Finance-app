@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ExpenseSettlement {
+public class ExpenseSettlement extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

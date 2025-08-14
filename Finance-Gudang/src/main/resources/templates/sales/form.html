@@ -52,6 +52,7 @@ window.addEventListener('DOMContentLoaded', function(){
 
     <label>Code</label>
     <input type="text" name="code" th:value="${sale.code}" required/>
+    <p th:if="${error}" class="error" th:text="${error}"></p>
 
     <label>Company</label>
     <input type="text" name="companyName" list="companyList" th:value="${sale.company != null ? sale.company.name : ''}" placeholder="Type or select company"/>

@@ -61,7 +61,32 @@ public class SaleController {
                            @RequestParam BigDecimal pricePerQuantity,
                            @RequestParam BigDecimal totalAmount,
                            @RequestParam LocalDate purchaseDate,
-                           @RequestParam String paymentMethod) {
+                           @RequestParam String paymentMethod,
+                           Model model) {
+        // Duplicate code check (unique constraint) – show friendly error instead of 500
+        var existingWithCode = saleRepo.findByCode(code).orElse(null);
+        if (existingWithCode != null && (id == null || !existingWithCode.getId().equals(id))) {
+            // Rebuild a view model with submitted values
+            Sale saleView = (id != null) ? saleRepo.findById(id).orElse(new Sale()) : new Sale();
+            saleView.setCode(code);
+            saleView.setQuantity(quantity);
+            saleView.setPricePerQuantity(pricePerQuantity);
+            saleView.setTotalAmount(totalAmount);
+            saleView.setPurchaseDate(purchaseDate);
+
+            Company c = new Company(); c.setName(companyName); saleView.setCompany(c);
+            Buyer b = new Buyer(); b.setName(buyerName); saleView.setBuyer(b);
+            Product p = new Product(); p.setName(productName); saleView.setProduct(p);
+
+            model.addAttribute("sale", saleView);
+            model.addAttribute("companyOptions", companyRepo.findAll());
+            model.addAttribute("buyerOptions", buyerRepo.findAll());
+            model.addAttribute("productOptions", productRepo.findAll());
+            model.addAttribute("paymentMethodOptions", paymentMethodRepo.findAll());
+            model.addAttribute("error", "Code already exists: " + code);
+            return "sales/form";
+        }
+
         Sale sale = (id != null) ? saleRepo.findById(id).orElse(new Sale()) : new Sale();
         sale.setCode(code);
 
@@ -73,7 +98,7 @@ public class SaleController {
             .orElseGet(() -> buyerRepo.save(newBuyer(buyerName)));
         sale.setBuyer(buyer);
 
-        Product product = productRepo.findByNameIgnoreCase(productName)
+        GudangFinance.Finance.Gudang.model.Product product = productRepo.findByNameIgnoreCase(productName)
             .orElseGet(() -> productRepo.save(newProduct(productName)));
         sale.setProduct(product);
 
@@ -106,8 +131,8 @@ public class SaleController {
         return b;
     }
 
-    private Product newProduct(String name) {
-        Product p = new Product();
+    private GudangFinance.Finance.Gudang.model.Product newProduct(String name) {
+        GudangFinance.Finance.Gudang.model.Product p = new GudangFinance.Finance.Gudang.model.Product();
         p.setName(name);
         return p;
     }

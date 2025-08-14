@@ -22,6 +22,8 @@
         <th>Total</th>
         <th>Date</th>
         <th>Payment</th>
+        <th>Added by</th>
+        <th>Last edited by</th>
         <th>Actions</th>
     </tr>
     <tr th:each="sale : ${sales}">
@@ -34,6 +36,8 @@
         <td th:text="${'Rp. ' + #numbers.formatDecimal(sale.totalAmount, 0, 'COMMA', 0, 'POINT')}"></td>
         <td th:text="${sale.purchaseDate}"></td>
         <td th:text="${sale.paymentMethod != null ? sale.paymentMethod.name : ''}"></td>
+        <td th:text="${sale.createdBy}"></td>
+        <td th:text="${sale.lastModifiedBy}"></td>
         <td>
             <a th:href="@{'/sales/edit/' + ${sale.id}}">Edit</a>
             <a th:href="@{'/sales/delete/' + ${sale.id}}" onclick="return confirm('Are you sure?')">Delete</a>

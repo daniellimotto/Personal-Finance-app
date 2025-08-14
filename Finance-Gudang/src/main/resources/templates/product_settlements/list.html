@@ -12,7 +12,7 @@
   <button type="submit">Search</button>
 </form>
 <table border="1">
-    <tr><th>Code</th><th>Product</th><th>Buyer</th><th>Company</th><th>Quantity Given</th><th>Date</th><th>Actions</th></tr>
+    <tr><th>Code</th><th>Product</th><th>Buyer</th><th>Company</th><th>Quantity Given</th><th>Date</th><th>Added by</th><th>Last edited by</th><th>Actions</th></tr>
     <tr th:each="ps : ${settlements}">
         <td th:text="${ps.sale.code}"></td>
         <td th:text="${ps.sale.product != null ? ps.sale.product.name : ''}"></td>
@@ -20,6 +20,12 @@
         <td th:text="${ps.sale.company != null ? ps.sale.company.name : ''}"></td>
         <td th:text="${ps.quantityGiven}"></td>
         <td th:text="${ps.dateGiven}"></td>
+        <td>
+            <span th:text="${ps.createdBy}"></span>
+        </td>
+        <td>
+            <span th:text="${ps.lastModifiedBy}"></span>
+        </td>
         <td>
             <a th:href="@{'/product-settlements/edit/' + ${ps.id}}">Edit</a>
             <a th:href="@{'/product-settlements/delete/' + ${ps.id}}" onclick="return confirm('Delete?')">Delete</a>

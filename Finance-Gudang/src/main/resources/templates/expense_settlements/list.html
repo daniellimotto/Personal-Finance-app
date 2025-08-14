@@ -12,13 +12,15 @@
   <button type="submit">Search</button>
 </form>
 <table border="1">
-    <tr><th>Expense Type</th><th>Product</th><th>Quantity Used</th><th>Date</th><th>Purpose</th><th>Actions</th></tr>
+    <tr><th>Expense Type</th><th>Product</th><th>Quantity Used</th><th>Date</th><th>Purpose</th><th>Added by</th><th>Last edited by</th><th>Actions</th></tr>
     <tr th:each="es : ${settlements}">
         <td th:text="${es.expense.expenseType.name}"></td>
         <td th:text="${es.expense.product.name}"></td>
         <td th:text="${es.quantityUsed}"></td>
         <td th:text="${es.dateUsed}"></td>
         <td th:text="${es.purpose}"></td>
+        <td th:text="${es.createdBy}"></td>
+        <td th:text="${es.lastModifiedBy}"></td>
         <td>
             <a th:href="@{'/expense-settlements/edit/' + ${es.id}}">Edit</a>
             <a th:href="@{'/expense-settlements/delete/' + ${es.id}}" onclick="return confirm('Delete?')">Delete</a>
