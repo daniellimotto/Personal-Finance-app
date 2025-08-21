@@ -6,7 +6,44 @@
 </head>
 <body>
 <h2>Welcome to Finance Dashboard</h2>
-<div class="card">
+
+<!-- Admin-only Financial Summary -->
+<div th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="card dashboard-summary">
+    <h3>Financial Summary</h3>
+    <div class="summary-grid">
+        <div class="summary-card sales">
+            <div class="summary-amount" style="color: var(--ok);">Rp. <span th:text="${#numbers.formatDecimal(dashboardTotals.totalSales, 0, 'COMMA', 0, 'POINT')}">0</span></div>
+            <div class="summary-label">Total Sales</div>
+        </div>
+        
+        <div class="summary-card expenses">
+            <div class="summary-amount" style="color: var(--danger);">Rp. <span th:text="${#numbers.formatDecimal(dashboardTotals.totalExpenses, 0, 'COMMA', 0, 'POINT')}">0</span></div>
+            <div class="summary-label">Total Expenses</div>
+        </div>
+        
+        <div class="summary-card product-settlements">
+            <div class="summary-amount" style="color: var(--primary);">Rp. <span th:text="${#numbers.formatDecimal(dashboardTotals.totalProductSettlements, 0, 'COMMA', 0, 'POINT')}">0</span></div>
+            <div class="summary-label">Product Settlements</div>
+        </div>
+        
+        <div class="summary-card expense-settlements">
+            <div class="summary-amount" style="color: var(--accent);">Rp. <span th:text="${#numbers.formatDecimal(dashboardTotals.totalExpenseSettlements, 0, 'COMMA', 0, 'POINT')}">0</span></div>
+            <div class="summary-label">Expense Settlements</div>
+        </div>
+    </div>
+    
+    <div class="net-profit-section">
+        <div class="net-profit-amount">
+            Net Profit/Loss: 
+            <span th:class="${dashboardTotals.netProfit >= 0 ? 'net-profit-positive' : 'net-profit-negative'}">
+                Rp. <span th:text="${#numbers.formatDecimal(dashboardTotals.netProfit, 0, 'COMMA', 0, 'POINT')}">0</span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="card quick-actions">
+<h3>Quick Actions</h3>
 <ul>
     <li><a class="button-link" th:href="@{/sales}">Sales</a></li>
     <li><a class="button-link" th:href="@{/expenses}">Expenses</a></li>

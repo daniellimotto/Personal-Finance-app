@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import GudangFinance.Finance.Gudang.model.AppUser;
 import GudangFinance.Finance.Gudang.repository.UserRepository;
+import GudangFinance.Finance.Gudang.service.DashboardService;
 
 @Controller
 public class AuthController {
@@ -20,6 +21,9 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DashboardService dashboardService;
 
     @Value("${app.admin.secret:}")
     private String adminSecret;
@@ -82,7 +86,9 @@ public class AuthController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard() {
+    public String dashboard(Model model) {
+        // Add dashboard totals for admin users
+        model.addAttribute("dashboardTotals", dashboardService.getDashboardTotals());
         return "home/dashboard";
     }
 }
